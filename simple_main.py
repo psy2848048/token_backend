@@ -2,7 +2,7 @@ from flask import Flask, make_response
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/health")
 def health():
     return make_response("it's healthy", 200)
 
