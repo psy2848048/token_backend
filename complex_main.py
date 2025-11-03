@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 def create_app():
     app.register_blueprint(health_bp)
+    app.register_blueprint(token_bp)
 
     return app
 
