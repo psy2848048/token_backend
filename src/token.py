@@ -7,6 +7,7 @@ from . import const
 ETHEREUM_RPC = "https://0xrpc.io/sep"
 CHAIN_ID = 11155111
 
+
 class Token:
     __web3: Web3
     __mnemonics: str
@@ -25,7 +26,8 @@ class Token:
         return self.__account.address
 
     def balanceOf(self, address) -> int:
-        return self.__contract.functions.balanceOf(address).call()
+        checksum_address = self.__web3.to_checksum_address(address)
+        return self.__contract.functions.balanceOf(checksum_address).call()
     
     def balanceOfMe(self) -> int:
         return self.balanceOf(self.__account.address)
@@ -43,5 +45,5 @@ class Token:
         tx_hash = self.__web3.eth.send_raw_transaction(rawTx.raw_transaction)
         print(f"tx sent as {tx_hash}, waiting for confirmation...")
 
-        receipt = self.__web3.eth.wait_for_transaction_receipt(tx_hash, timeout=180)
-        return receipt
+        self.__web3.eth.wait_for_transaction_receipt(tx_hash, timeout=180)
+        return tx_hash.hex()
